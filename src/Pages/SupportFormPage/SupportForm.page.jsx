@@ -112,7 +112,7 @@ export default function SupportFormPage() {
         <button className="btn btn-primary" type="submit" disabled={disabled}>
           {disabled ? (
             <span
-              className="spinner-border spinner-border-sm"
+              className="spinner-border spinner-border-sm mr-2"
               role="status"
               aria-hidden="true"
             >

@@ -1,85 +1,113 @@
-import React from "react";
+import React, {useState, useCallback} from "react";
+import Logo from '../../assets/logo.png';
+import './LogInForm.styles.scss';
+import axios from 'axios';
+
+const handleChange = (setFunction) => (newStateEvent) => {
+  setFunction(newStateEvent.target.value);
+};
 
 export default function LoginForm() {
-  return (
-    <div className="container h-100">
-      <div className="d-flex justify-content-center h-100">
-        <div className="user_card">
-          <div className="d-flex justify-content-center">
-            <div className="brand_logo_container">
-              <img
-                src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png"
-                className="brand_logo"
-                alt="Logo"
-              />
-            </div>
-          </div>
-          <div className="d-flex justify-content-center form_container">
-            <form>
-              <div className="input-group mb-3">
-                <div className="input-group-append">
-                  <span className="input-group-text">
-                    <i className="fas fa-user"></i>
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  name=""
-                  className="form-control input_user"
-                  value=""
-                  placeholder="username"
-                />
-              </div>
-              <div className="input-group mb-2">
-                <div className="input-group-append">
-                  <span className="input-group-text">
-                    <i className="fas fa-key"></i>
-                  </span>
-                </div>
-                <input
-                  type="password"
-                  name=""
-                  className="form-control input_pass"
-                  value=""
-                  placeholder="password"
-                />
-              </div>
-              <div className="form-group">
-                <div className="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    id="customControlInline"
-                  />
-                  <label
-                    className="custom-control-label"
-                    for="customControlInline"
-                  >
-                    Remember me
-                  </label>
-                </div>
-              </div>
-              <div className="d-flex justify-content-center mt-3 login_container">
-                <button type="button" name="button" className="btn login_btn">
-                  Login
-                </button>
-              </div>
-            </form>
-          </div>
 
-          <div className="mt-4">
-            <div className="d-flex justify-content-center links">
-              Don't have an account?{" "}
-              <a href="#" className="ml-2">
-                Sign Up
-              </a>
-            </div>
-            <div className="d-flex justify-content-center links">
-              <a href="#">Forgot your password?</a>
-            </div>
-          </div>
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [disabled, setDisabled] = useState(false);
+    
+    const changeEmail = useCallback(handleChange(setEmail), [setEmail]);
+    const changePassword = useCallback(handleChange(setPassword), [setPassword]);
+
+    const handleSubmit = useCallback(
+      (event) => {
+        setDisabled(true);
+        event.preventDefault();  
+        
+        axios
+          .post('https://greener-support.herokuapp.com/auth/local', {
+           identifier: email,
+            password: password,
+        })
+          .then(response => {
+    // Handle success.
+          console.log('Well done!');
+          console.log('User profile', response.data.user);
+          console.log('User token', response.data.jwt);
+         })
+          .catch(error => {
+    // Handle error.
+          console.log('An error occurred:', error.response);
+          })
+          .finally(() => {
+            setDisabled(false);
+          });
+        
+        /*fetch("/ruta", {
+          method: "POST",
+          body: JSON.stringify({
+            name,
+            email,
+            screen,
+            description,
+          }),
+        })
+          .then((response) => response.json())
+          .then(()=>{
+              alert('Se ha enviado correctamente')
+          })
+          .finally(() => {
+            setDisabled(false);
+          });*/
+      },
+      [email, password]
+    );
+
+
+  return (
+    <div className = 'login-form-component'>
+     <img 
+        className = "LogoImage"
+        src = {Logo}
+      />
+      <h1>Inicio de sesión</h1>
+       <form className = 'formStyle' onSubmit = {handleSubmit}>
+        <div className="form-group">
+          <label 
+          className = 'labelStyle'
+          htmlFor="email">Correo electrónico</label>
+          <input
+            name="email"
+            type="email"
+            className="form-control formInput"
+            id="email"
+            placeholder="nombre@ejemplo.com"
+            value = {email}
+            onChange = {changeEmail}
+          />
         </div>
-      </div>
+        <div className="form-group">
+          <label 
+          className = 'labelStyle'
+          htmlFor="password">Contraseña</label>
+          <input
+            name="password"
+            type="password"
+            className="form-control formInput"
+            id="password"
+            value = {password}
+            onChange = {changePassword}
+          />
+        </div>
+        <button className="btn btn-primary logInBtn" type="submit" disabled = {disabled}>
+        {disabled ? (
+            <span
+              className="spinner-border spinner-border-sm mr-2"
+              role="status"
+              aria-hidden="true"
+            >
+            </span>
+          ) : null}
+          Iniciar sesión
+        </button>
+      </form>
     </div>
   );
 }
