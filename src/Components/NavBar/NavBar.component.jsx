@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
-export default function NavBar() {
+function NavBar({ match }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <Link to="/" className="navbar-brand">
@@ -32,6 +32,7 @@ export default function NavBar() {
               Tickets
             </Link>
           </li>
+
           <li className="nav-item dropdown">
             <span
               className="nav-link dropdown-toggle"
@@ -62,7 +63,11 @@ export default function NavBar() {
             </Link>
           </li>
         </ul>
+
+
       </div>
     </nav>
   );
 }
+
+export default withRouter(NavBar)
