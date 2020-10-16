@@ -1,5 +1,7 @@
 .jumbotron {
-    background-color: #c3d4b3;
+    background-color: #8cc63f;
+    box-shadow: 5px 10px #1f6a39;
+    border-radius: 0;
 }
 .display-4 {
     display: inline;
@@ -14,23 +16,21 @@
     border-color: #372a0c;
 }
 .createbtn {
-    display: ruby-base;
+    position: relative;
+    display: inline;
     color: white;
-    vertical-align: super;
     background-color: #3e721e;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    margin-left: 5%;
+    margin-left: 74%;
     width: 25%;
 
   }
   
 .createbtn:hover {
     color: white;
-    background-color: #8cc63f;
+    background-color: #4b642a;
 
 }
 
 .table {
-    width: 135%;
+    width: 100%;
 }
