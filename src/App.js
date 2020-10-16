@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar.component";
 import HomePage from "./pages/HomePage/Home.page";
 import LoginPage from "./pages/LoginPage/Login.page";
+import RegisterPage from './pages/RegisterFormPage/Register.page'
 import SupportFormPage from "./pages/SupportFormPage/SupportForm.page";
 import "./App.css";
 
@@ -13,10 +14,10 @@ function App() {
         <NavBar />
         <main>
           <Switch>
-            <Route path="/" component={HomePage} />
+            <Route exact path="/" component={HomePage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/support" component={SupportFormPage} />
-            <Route path="/supprot" component={null} />
+            <Route path="/Register" component={RegisterPage} />
           </Switch>
         </main>
       </Router>
