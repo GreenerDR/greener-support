@@ -1,11 +1,14 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
+import './NavBar.styles.scss';
+import logo from '../../assets/logo.png';
 
 function NavBar({ match }) {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark navbar-style">
       <Link to="/" className="navbar-brand">
-        Greener
+        <img src={logo} width="30" height="30" class="d-inline-block align-top" alt=""></img>
+        reener
       </Link>
       <button
         className="navbar-toggler"
@@ -48,7 +51,7 @@ function NavBar({ match }) {
               <Link className="dropdown-item" to="/support">
                 Nueva
               </Link>
-              <Link className="dropdown-item" to="/">
+              <Link className="dropdown-item" to="/ticket">
                 Action
               </Link>
               <div className="dropdown-divider"></div>

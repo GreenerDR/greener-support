@@ -1,0 +1,19 @@
+.response-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #c3d4b3;
+  box-shadow: 5px 10px #1f6a39;
+  padding: 4%;
+
+  .state {
+    margin: 10px 0;
+  }
+
+  .message {
+    margin-top: 25px;
+  }
+}
