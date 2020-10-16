@@ -9,6 +9,7 @@ const handleChange = (setFunction) => (newStateEvent) => {
 
 export default function LoginForm() {
 
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [disabled, setDisabled] = useState(false);
@@ -23,19 +24,19 @@ export default function LoginForm() {
         
         axios
           .post('https://greener-support.herokuapp.com/auth/local', {
-           identifier: email,
+            identifier: email,
             password: password,
         })
           .then(response => {
-    // Handle success.
-          console.log('Well done!');
-          console.log('User profile', response.data.user);
-          console.log('User token', response.data.jwt);
-         })
+          // Handle success.
+          //console.log('Well done!');
+          //console.log('User profile', response.data.user);
+          console.log(response.data.json());
+        })
           .catch(error => {
-    // Handle error.
+          // Handle error.
           console.log('An error occurred:', error.response);
-          })
+        })
           .finally(() => {
             setDisabled(false);
           });

@@ -10,7 +10,7 @@ export default function TicketResponse() {
             <div className='message'>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus purus est, eu fermentum urna eleifend vitae. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
             </div>
-        </div>
+        </div> 
     )
 }
 
