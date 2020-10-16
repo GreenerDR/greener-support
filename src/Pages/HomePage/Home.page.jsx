@@ -20,7 +20,7 @@ export default function HomePage() {
                         <li>Visualización de tickets creados</li>
                         <li>Soporte técnico 24/7</li>
                     </ul>
-                    <Link to="/login" className="btn btn-success mt-3 ml-4">Iniciar Sesión</Link>
+                    <Link to="/login" className="btn btn-primary logInBtn">Iniciar Sesión</Link>
                 </div>
                 <img src={Logo} id='HomeLogo' alt='Logo Greener' />
 

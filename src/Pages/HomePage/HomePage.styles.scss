@@ -10,6 +10,16 @@
         font-weight: bold;
     }
 
+.logInBtn {
+        background-color: #3e721e;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 50%;
+        align-self: center;
+        border-color: #372a0c;
+        border-radius: 20px;
+      }
+
  .flex-row-center {
      display:flex;
      flex-flow: row nowrap;
