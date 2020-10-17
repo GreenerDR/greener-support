@@ -77,7 +77,7 @@ function NavBar({ match }) {
               </li>
               <li className="nav-item active" onClick={signOut}>
                 <Link className="nav-link" to="/login">
-                  Sign out
+                  Cerrar sesión
                 </Link>
               </li>
             </>
