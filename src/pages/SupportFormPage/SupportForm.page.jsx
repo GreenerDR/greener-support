@@ -60,7 +60,7 @@ export default function SupportFormPage({ history }) {
               type="text"
               className="form-control"
               id="title"
-              placeholder="Jon Doe"
+              placeholder="Problema con..."
               value={title}
               onChange={changeTitle}
             />
