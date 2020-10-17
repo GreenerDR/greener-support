@@ -81,7 +81,7 @@ function RegisterForm({ history }) {
             type="text"
             className="form-control formInput"
             id="name"
-            placeholder="Joe Mama"
+            placeholder="Juan Pérez"
             value={name}
             onChange={changeName}
           />
@@ -152,7 +152,12 @@ function RegisterForm({ history }) {
           ) : null}
           Registrarse
         </button>
-        <p className = "textToLink">¿Ya tienes una cuenta de Greener? <a className = "hyperlink" href="/login">Inicia sesión</a></p>
+        <p className="textToLink">
+          ¿Ya tienes una cuenta de Greener?{" "}
+          <a className="hyperlink" href="/login">
+            Inicia sesión
+          </a>
+        </p>
       </form>
     </div>
   );
