@@ -1,110 +1,105 @@
-import React, {useState, useCallback} from "react";
-import Logo from '../../assets/logo.png';
-import './LogInForm.styles.scss';
-import axios from 'axios';
+import React, { useState, useCallback } from "react";
+import Logo from "../../assets/logo.png";
+import "./LogInForm.styles.scss";
+import axios from "axios";
+import { withRouter } from "react-router";
 
 const handleChange = (setFunction) => (newStateEvent) => {
   setFunction(newStateEvent.target.value);
 };
 
-export default function LoginForm() {
+function LoginForm({ history }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [disabled, setDisabled] = useState(false);
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false,
+  });
 
+  const changeEmail = useCallback(
+    (email) => {
+      handleChange(setEmail)(email);
+      setErrors({ ...errors, email: false });
+    },
+    [setEmail, errors]
+  );
+  const changePassword = useCallback(handleChange(setPassword), [setPassword]);
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [disabled, setDisabled] = useState(false);
-    
-    const changeEmail = useCallback(handleChange(setEmail), [setEmail]);
-    const changePassword = useCallback(handleChange(setPassword), [setPassword]);
-
-    const handleSubmit = useCallback(
-      (event) => {
+  const handleSubmit = useCallback(
+    (event) => {
+      if (password) {
         setDisabled(true);
-        event.preventDefault();  
-        
+        event.preventDefault();
         axios
-          .post('https://greener-support.herokuapp.com/auth/local', {
+          .post("https://greener-support.herokuapp.com/auth/local", {
             identifier: email,
             password: password,
-        })
-          .then(response => {
-          // Handle success.
-          //console.log('Well done!');
-          //console.log('User profile', response.data.user);
-          console.log(response.data.json());
-        })
-          .catch(error => {
-          // Handle error.
-          console.log('An error occurred:', error.response);
-        })
-          .finally(() => {
+          })
+          .then((response) => {
+            sessionStorage.setItem("jwt", response.data.jwt);
+            sessionStorage.setItem("userId", response.data.user.id);
+            history.push("/tickets");
+          })
+          .catch((error) => {
+            setErrors({ ...errors, email: true });
             setDisabled(false);
           });
-        
-        /*fetch("/ruta", {
-          method: "POST",
-          body: JSON.stringify({
-            name,
-            email,
-            screen,
-            description,
-          }),
-        })
-          .then((response) => response.json())
-          .then(()=>{
-              alert('Se ha enviado correctamente')
-          })
-          .finally(() => {
-            setDisabled(false);
-          });*/
-      },
-      [email, password]
-    );
-
+      }
+    },
+    [email, password, errors, history]
+  );
 
   return (
-    <div className = 'login-form-component'>
-     <img 
-        className = "LogoImage"
-        src = {Logo}
-      />
+    <div className="login-form-component">
+      <img className="LogoImage" src={Logo} alt="logo" />
       <h1>Inicio de sesión</h1>
-       <form className = 'formStyle' onSubmit = {handleSubmit}>
+      <form className="formStyle" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label 
-          className = 'labelStyle'
-          htmlFor="email">Correo electrónico</label>
+          <label className="labelStyle" htmlFor="email">
+            Correo electrónico
+          </label>
           <input
             name="email"
             type="email"
             className="form-control formInput"
             id="email"
             placeholder="nombre@ejemplo.com"
-            value = {email}
-            onChange = {changeEmail}
+            value={email}
+            onChange={changeEmail}
           />
         </div>
         <div className="form-group">
-          <label 
-          className = 'labelStyle'
-          htmlFor="password">Contraseña</label>
+          <label className="labelStyle" htmlFor="password">
+            Contraseña
+          </label>
           <input
             name="password"
             type="password"
-            className="form-control formInput"
+            className={`form-control formInput ${
+              errors.email ? "is-invalid" : ""
+            }`}
             id="password"
-            value = {password}
-            onChange = {changePassword}
+            value={password}
+            onChange={changePassword}
           />
+          {errors.email ? (
+            <div className="invalid-feedback">
+              Correo o contraseña incorrecta
+            </div>
+          ) : null}
         </div>
-        <button className="btn btn-primary logInBtn" type="submit" disabled = {disabled}>
-        {disabled ? (
+        <button
+          className="btn btn-primary logInBtn"
+          type="submit"
+          disabled={disabled}
+        >
+          {disabled ? (
             <span
               className="spinner-border spinner-border-sm mr-2"
               role="status"
               aria-hidden="true"
-            >
-            </span>
+            ></span>
           ) : null}
           Iniciar sesión
         </button>
@@ -112,3 +107,5 @@ export default function LoginForm() {
     </div>
   );
 }
+
+export default withRouter(LoginForm);

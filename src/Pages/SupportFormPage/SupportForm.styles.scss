@@ -1,16 +1,20 @@
 .alert {
-    position: absolute;
+  position: absolute;
 }
 
-.btn {
-    background-color: #3e721e;
-}
-
-.btn:hover {
-    background-color: #4b642a;
+.ticketBtn {
+  background-color: #3e721e;
+  color: white;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 20%;
+  align-self: center;
+  border-color: #372a0c;
+  border-radius: 20px;
 }
 
 .jumbotron {
-    margin-top: 70px;
-    padding: 25px;
+  margin-top: 70px;
+  padding: 25px;
+  width: 60%;
 }

@@ -1,24 +1,78 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Logo from '../../assets/logo.png';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import moment from "moment";
 import TicketResponse from "../../components/TicketResponse/TicketResponse.component";
 import "./TicketDetail.styles.scss";
+import { ticketStates } from "../TicketsPage/Tickets.page";
 
-export default function TicketDetail() {
-    return (
-        <div className='container'>
-            <div className='ticket-container'>
-                <h1>Ticket #1db23</h1>
-                <b>Abierto por Pedro Perez, hace 1 mes</b>
-                <span class="badge badge-success state">Resuelto</span>
-                <div className='message'>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus purus est, eu fermentum urna eleifend vitae. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque at ultrices eros. Etiam a est a massa sodales elementum. Donec congue, lorem et dapibus volutpat, arcu dui pulvinar tellus, non molestie libero metus non orci. Nullam dictum sollicitudin ante. Duis aliquam eros et ultrices pharetra. Sed pretium fringilla massa eu sollicitudin.</p>
-                </div>
+export default function TicketDetail({ match }) {
+  const [ticket, setTicket] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://greener-support.herokuapp.com/tickets/${match.params.ticketId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+          },
+        }
+      )
+      .then((response) => {
+        setTicket(response.data);
+      })
+      .catch((error) => {
+        // Handle error.
+      });
+  }, []);
+
+  return (
+    <div className="container">
+      <div className="card ticket-container">
+        {ticket ? (
+          <>
+            <div className="card-body">
+              <h1 className="card-title">{ticket.title}</h1>
+              <h6 className="card-subtitle mb-2 text-muted">
+                <span
+                  className={`badge badge-${
+                    ticketStates[ticket.ticketState.id]
+                  } mt-2 mr-1`}
+                >
+                  {ticket.ticketState.state}
+                </span>{" "}
+                Ticket #{ticket.id}
+              </h6>
+              <p className="card-text">{ticket.description}</p>
+              <p class="card-text">
+                <small class="text-muted">
+                  Abierto por {ticket.user.username}, el
+                  {" " + moment(ticket.created_at).format("DD/MM/YYYY")}
+                </small>
+              </p>
             </div>
-            <div className="response">
-                <TicketResponse/>
-            </div>  
-        </div>      
-    )
+          </>
+        ) : (
+          <div className="progress w-100 mb-4">
+            <div
+              className="progress-bar bg-success w-100 progress-bar-striped progress-bar-animated"
+              role="progressbar"
+              aria-valuenow="100"
+              aria-valuemin="100"
+              aria-valuemax="100"
+              width="100%"
+            />
+          </div>
+        )}
+      </div>
+      {ticket && ticket.response ? (
+        <div className="response">
+          <TicketResponse
+            updated_at={ticket.updated_at}
+            response={ticket.response}
+          />
+        </div>
+      ) : null}
+    </div>
+  );
 }
-

@@ -1,99 +1,160 @@
-import React, {useState, useCallback} from "react";
-import Logo from '../../assets/logo.png';
-import './RegisterForm.styles.scss';
-import axios from 'axios';
+import React, { useState, useCallback, useEffect } from "react";
+import { withRouter } from "react-router";
+import axios from "axios";
+import Logo from "../../assets/logo.png";
+import "./RegisterForm.styles.scss";
 
 const handleChange = (setFunction) => (newStateEvent) => {
   setFunction(newStateEvent.target.value);
 };
 
-export default function RegisterForm(){
-    
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmedPass, setconfirmedPass] = useState("");
-    const [email, setEmail] = useState("");
-    const [disabled, setDisabled] = useState(false);
-    
-    const changeName = useCallback(handleChange(setName), [setName]);
-    const changeEmail = useCallback(handleChange(setEmail), [setEmail]);
-    const changePassword = useCallback(handleChange(setPassword), [setPassword]);
-    const changeConfirmedPassword = useCallback(handleChange(setconfirmedPass), [setconfirmedPass]);
+function RegisterForm({ history }) {
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmedPass, setconfirmedPass] = useState("");
+  const [email, setEmail] = useState("");
+  const [inRequest, setInRequest] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false,
+  });
 
-    return(
-        <div className = "register-form-component">
-             <img 
-            className = "LogoImage"
-            src = {Logo}
-      />
+  const changeName = useCallback(handleChange(setName), [setName]);
+  const changeEmail = useCallback(
+    (email) => {
+      handleChange(setEmail)(email);
+      setErrors({ ...errors, email: false });
+    },
+    [setEmail, errors]
+  );
+  const changePassword = useCallback(handleChange(setPassword), [setPassword]);
+  const changeConfirmedPassword = useCallback(handleChange(setconfirmedPass), [
+    setconfirmedPass,
+  ]);
+
+  useEffect(() => {
+    setDisabled(password !== confirmedPass || !password.length);
+    setErrors({ ...errors, password: password !== confirmedPass });
+  }, [password, confirmedPass]);
+
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      setDisabled(true);
+      setInRequest(true);
+
+      if (password === confirmedPass) {
+        axios
+          .post("https://greener-support.herokuapp.com/auth/local/register", {
+            username: name,
+            email: email,
+            password: password,
+          })
+          .then((response) => {
+            sessionStorage.setItem("jwt", response.data.jwt);
+            sessionStorage.setItem("userId", response.data.user.id);
+            history.push("/tickets");
+          })
+          .catch((error) => {
+            // Handle error.
+            setErrors({ ...errors, email: true });
+            setDisabled(false);
+            setInRequest(false);
+          });
+      }
+    },
+    [name, password, email, confirmedPass, errors, history]
+  );
+
+  return (
+    <div className="register-form-component">
+      <img className="LogoImage" src={Logo} alt="logo" />
       <h1>Registro de cuenta</h1>
-       <form className = 'formStyle'>
-       <div className="form-group">
-          <label 
-          className = 'labelStyle'
-          htmlFor="name">Nombre completo</label>
+      <form className="formStyle" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label className="labelStyle" htmlFor="name">
+            Nombre completo
+          </label>
           <input
             name="name"
-            type="email"
+            type="text"
             className="form-control formInput"
             id="name"
             placeholder="Joe Mama"
-            value = {name}
-            onChange = {changeName}
+            value={name}
+            onChange={changeName}
           />
         </div>
         <div className="form-group">
-          <label 
-          className = 'labelStyle'
-          htmlFor="email">Correo electrónico</label>
+          <label className="labelStyle" htmlFor="email">
+            Correo electrónico
+          </label>
           <input
             name="email"
             type="email"
-            className="form-control formInput"
+            className={`form-control formInput ${
+              errors?.email ? "is-invalid" : ""
+            }`}
             id="email"
             placeholder="nombre@ejemplo.com"
-            value = {email}
-            onChange = {changeEmail}
+            value={email}
+            onChange={changeEmail}
           />
+          {errors.email ? (
+            <div className="invalid-feedback">El correo ya está en uso</div>
+          ) : null}
         </div>
         <div className="form-group">
-          <label 
-          className = 'labelStyle'
-          htmlFor="password">Contraseña</label>
+          <label className="labelStyle" htmlFor="password">
+            Contraseña
+          </label>
           <input
             name="password"
             type="password"
             className="form-control formInput"
             id="password"
-            value = {password}
-            onChange = {changePassword}
+            value={password}
+            onChange={changePassword}
           />
         </div>
         <div className="form-group">
-          <label 
-          className = 'labelStyle'
-          htmlFor="password">Confirmar contraseña</label>
+          <label className="labelStyle" htmlFor="password">
+            Confirmar contraseña
+          </label>
           <input
             name="password"
             type="password"
-            className="form-control formInput"
+            className={`form-control formInput ${
+              errors.password ? "is-invalid" : ""
+            }`}
             id="password"
-            value = {confirmedPass}
-            onChange = {changeConfirmedPassword}
+            value={confirmedPass}
+            onChange={changeConfirmedPassword}
           />
+          {errors.password ? (
+            <div className="invalid-feedback">Las contraseñas no coinciden</div>
+          ) : null}
         </div>
-        <button className="btn btn-primary logInBtn" type="submit" disabled = {disabled}>
-        {disabled ? (
-            <span
-              className="spinner-border spinner-border-sm mr-2"
-              role="status"
-              aria-hidden="true"
-            >
-            </span>
+        <button
+          className="btn btn-primary logInBtn"
+          type="submit"
+          disabled={disabled}
+        >
+          {disabled ? (
+            inRequest ? (
+              <span
+                className="spinner-border spinner-border-sm mr-2"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : null
           ) : null}
           Iniciar sesión
         </button>
       </form>
-        </div>
-    );
-} 
+    </div>
+  );
+}
+
+export default withRouter(RegisterForm);

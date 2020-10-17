@@ -1,106 +1,72 @@
 import React, { useState } from "react";
 import { useCallback } from "react";
-import { Link } from "react-router-dom";
-import "./SupportForm.styles.scss"
+import axios from "axios";
+import "./SupportForm.styles.scss";
+import { ticketStates } from "../TicketsPage/Tickets.page";
 
 const handleChange = (setFunction) => (newStateEvent) => {
   setFunction(newStateEvent.target.value);
 };
 
-export default function SupportFormPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [screen, setScreen] = useState("Login");
+export default function SupportFormPage({ history }) {
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [disabled, setDisabled] = useState(false);
-  const changeName = useCallback(handleChange(setName), [setName]);
 
-  const changeEmail = useCallback(handleChange(setEmail), [setEmail]);
-
-  const changeScreen = useCallback(handleChange(setScreen), [setScreen]);
-
+  const changeTitle = useCallback(handleChange(setTitle), [setTitle]);
   const changeDescription = useCallback(handleChange(setDescription), [
     setDescription,
   ]);
 
   const handleSubmit = useCallback(
     (event) => {
-      setDisabled(true);
       event.preventDefault();
+      setDisabled(true);
 
-      /*fetch("/ruta", {
-        method: "POST",
-        body: JSON.stringify({
-          name,
-          email,
-          screen,
-          description,
-        }),
-      })
-        .then((response) => response.json())
-        .then(()=>{
-            alert('Se ha enviado correctamente')
+      axios
+        .post(
+          "https://greener-support.herokuapp.com/tickets",
+          {
+            title,
+            description,
+            ticketState: 2,
+            user: sessionStorage.getItem("userId"),
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+            },
+          }
+        )
+        .then((response) => {
+          history.push("/tickets");
         })
-        .finally(() => {
+        .catch((error) => {
+          // Handle error.
           setDisabled(false);
-        });*/
+        });
     },
-    [name, email, screen, description]
+    [title, description]
   );
 
   return (
     <>
-      <div className="alert alert-success" role="alert">
-        A simple success alert with{" "}
-        <Link to="/home" className="alert-link">
-          home
-        </Link>
-        . Give it a click if you like.
-      </div>
       <section className="jumbotron">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">Nombre</label>
+            <label htmlFor="name">Título del problema</label>
             <input
-              name="name"
+              name="title"
               type="text"
               className="form-control"
-              id="name"
+              id="title"
               placeholder="Jon Doe"
-              value={name}
-              onChange={changeName}
+              value={title}
+              onChange={changeTitle}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="email">Dirección de correo electrónico</label>
-            <input
-              name="email"
-              type="email"
-              className="form-control"
-              id="email"
-              placeholder="nombre@ejemplo.com"
-              value={email}
-              onChange={changeEmail}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="screen">Pantalla donde ocurrió el problema</label>
-            <select
-              className="form-control"
-              id="screen"
-              value={screen}
-              onChange={changeScreen}
-            >
-              <option>Login</option>
-              <option>Principal</option>
-              <option>Guías</option>
-              <option>Eventos</option>
-              <option>Mapas</option>
-              <option>Ajustes</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Descripción del problema</label>
+            <label htmlFor="description">Mensaje</label>
             <textarea
               name="description"
               className="form-control"
@@ -111,17 +77,17 @@ export default function SupportFormPage() {
               onChange={changeDescription}
             ></textarea>
           </div>
-          <button className="btn btn-primary" type="submit" disabled={disabled}>
+
+          <button className="btn ticketBtn" type="submit" disabled={disabled}>
             {disabled ? (
               <span
                 className="spinner-border spinner-border-sm mr-2"
                 role="status"
                 aria-hidden="true"
-              >
-              </span>
+              ></span>
             ) : null}
-          Enviar
-        </button>
+            Enviar
+          </button>
         </form>
       </section>
     </>
