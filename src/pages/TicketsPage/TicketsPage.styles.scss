@@ -1,4 +1,5 @@
 .tickets-master-table {
+  margin-top: 20px;
   tr {
     cursor: pointer;
     &:hover {
@@ -19,15 +20,6 @@
   border-radius: 20px;
 }
 
-.createbtn {
-  position: relative;
-  display: inline;
-  color: white;
-  background-color: #3e721e;
-  margin-left: 74%;
-  width: 25%;
-}
-
 .createbtn:hover {
   color: white;
   background-color: #4b642a;
@@ -35,4 +27,16 @@
 
 .table {
   width: 100%;
+}
+
+.table .thead-light th {
+  color: #fff;
+  background-color: #372a0c;
+  border-color: #372a0c;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #3e721e;
+  border-color: #372a0c;
 }
