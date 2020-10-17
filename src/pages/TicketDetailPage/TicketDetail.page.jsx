@@ -47,7 +47,8 @@ export default function TicketDetail({ match }) {
               <p class="card-text">
                 <small class="text-muted">
                   Abierto por {ticket.user.username}, el
-                  {" " + moment(ticket.created_at).format("DD/MM/YYYY")}
+                  {" " +
+                    moment(ticket.created_at).format("DD/MM/YYYY hh:mm:ss")}
                 </small>
               </p>
             </div>

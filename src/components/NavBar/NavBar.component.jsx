@@ -11,7 +11,10 @@ function NavBar({ match }) {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark navbar-style">
-      <Link to="/" className="navbar-brand">
+      <Link
+        to={`${!sessionStorage.getItem("jwt") ? "/" : "/tickets"}`}
+        className="navbar-brand"
+      >
         <img
           src={logo}
           width="30"
@@ -32,20 +35,18 @@ function NavBar({ match }) {
       >
         <span className="navbar-toggler-icon"></span>
       </button>
-
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav mr-auto"></ul>
         <ul className="navbar-nav ml-auto">
           {!sessionStorage.getItem("jwt") ? (
             <>
               <li className="nav-item active">
                 <Link to="/login" className="nav-link">
-                  Login <span className="sr-only">(current)</span>
+                  Iniciar sesión <span className="sr-only">(current)</span>
                 </Link>
               </li>
               <li className="nav-item active">
                 <Link className="nav-link" to="/register">
-                  Register
+                  Crear cuenta
                 </Link>
               </li>
             </>
@@ -62,9 +63,12 @@ function NavBar({ match }) {
                 >
                   Tickets
                 </span>
-                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div
+                  className="dropdown-menu .dropdown-menu-right"
+                  aria-labelledby="navbarDropdown"
+                >
                   <Link className="dropdown-item" to="/support">
-                    Crear nuevo ticket
+                    Crear ticket
                   </Link>
                   <Link className="dropdown-item" to="/tickets">
                     Ver tickets

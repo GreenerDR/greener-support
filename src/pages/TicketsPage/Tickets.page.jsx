@@ -53,10 +53,10 @@ export default function TicketsPage({ history }) {
           </td>
           <td>{ticket.title}</td>
           <td align="right">
-            {moment(ticket.updated_at).format("DD/MM/YYYY")}
+            {moment(ticket.updated_at).format("DD/MM/YYYY hh:mm:ss")}
           </td>
           <td align="right">
-            {moment(ticket.created_at).format("DD/MM/YYYY")}
+            {moment(ticket.created_at).format("DD/MM/YYYY hh:mm:ss")}
           </td>
         </tr>
       )),
