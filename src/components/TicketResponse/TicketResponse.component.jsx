@@ -6,7 +6,7 @@ export default function TicketResponse({ response, updated_at }) {
   return (
     <div className="response-container">
       <b>{`Por Equipo Greener, el ${moment(updated_at).format(
-        "DD/MM/YYYY"
+        "DD/MM/YYYY hh:mm"
       )}`}</b>
       <div className="message">
         <p>{response}</p>
