@@ -150,8 +150,9 @@ function RegisterForm({ history }) {
               />
             ) : null
           ) : null}
-          Iniciar sesión
+          Registrarse
         </button>
+        <p className = "textToLink">¿Ya tienes una cuenta de Greener? <a className = "hyperlink" href="/login">Inicia sesión</a></p>
       </form>
     </div>
   );

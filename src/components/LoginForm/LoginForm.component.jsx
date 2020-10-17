@@ -103,6 +103,7 @@ function LoginForm({ history }) {
           ) : null}
           Iniciar sesión
         </button>
+        <p className = "textToLink" >¿No tienes una cuenta de Greener? <a className = "hyperlink" href="/register">Registrate</a></p>
       </form>
     </div>
   );
