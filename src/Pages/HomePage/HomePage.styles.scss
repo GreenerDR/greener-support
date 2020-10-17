@@ -1,35 +1,35 @@
 .home-page {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #8cc63f;
+  box-shadow: 5px 10px #1f6a39;
+  height: auto;
+  min-width: 50%;
+  max-width: 1045px;
+  h1 {
+    font-weight: bold;
+  }
+  padding: 5% !important;
+
+  .logInBtn {
+    background-color: #3e721e;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 50%;
+    align-self: center;
+    border-color: #372a0c;
+    border-radius: 20px;
+  }
+
+  .flex-row-center {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    background-color: #8cc63f;
-    box-shadow: 5px 10px #1f6a39;
-    height: auto;
-    min-width: 50%;
-    max-width: 1045px; 
-    h1 {
-        font-weight: bold;
-    }
+    flex-flow: row nowrap;
 
-.logInBtn {
-        background-color: #3e721e;
-        margin-top: 5%;
-        margin-bottom: 5%;
-        width: 50%;
-        align-self: center;
-        border-color: #372a0c;
-        border-radius: 20px;
-      }
-
- .flex-row-center {
-     display:flex;
-     flex-flow: row nowrap;
-     
     #HomeLogo {
-        height: 335px;
-        width: 335px;
-        margin: 0 0 0 15px;
+      height: 335px;
+      width: 335px;
+      margin: 0 0 0 15px;
     }
- }
-
+  }
 }
