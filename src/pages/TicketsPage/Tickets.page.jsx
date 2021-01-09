@@ -72,7 +72,7 @@ export default function TicketsPage({ history }) {
             Crear nuevo ticket
           </Link>
         </div>
-        <table className="table table-bordered table-light tickets-master-table">
+        <table className="table table-bordered table-light tickets-master-table table-responsive">
           <thead className="thead-light">
             <tr>
               <th scope="col">ID</th>

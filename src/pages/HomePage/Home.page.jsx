@@ -6,7 +6,7 @@ import "./HomePage.styles.scss";
 export default function HomePage() {
   return (
     <section className="jumbotron home-page containerStyles">
-      <h1 className="display-4 mb-4">
+      <h1 className="display-4 mb-4" style={{ fontSize: "5vw" }}>
         Bienvenido a la página de soporte de Greener.
       </h1>
       <div className="flex-row-center">
@@ -16,13 +16,17 @@ export default function HomePage() {
             Estamos aquí para ayudarte.
           </p>
 
-          <h4>¿Qué es Greener?</h4>
+          <h4 style={{ fontSize: "3vw" }}>
+            <b>¿Qué es Greener?</b>
+          </h4>
           <p>
             Greener es una app móvil que te brindará la información necesaria
             para hacer un mundo más verde.
           </p>
 
-          <h4>Funcionalidades de esta página</h4>
+          <h4 style={{ fontSize: "3vw" }}>
+            <b>Funcionalidades de esta página</b>
+          </h4>
           <ul>
             <li>Creación de tickets</li>
             <li>Visualización de tickets creados</li>
